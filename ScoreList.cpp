@@ -1,7 +1,7 @@
 //2026-10-01 iwashita-minoru
 #include "ScoreList.h"
 #include "Node.h"
-#include <iostream>
+#include <ostream>
 
 ScoreList::ScoreList() {
     node = new Node(nullptr, nullptr, ScoreData{});
@@ -65,9 +65,9 @@ int ScoreList::size() const {
     return count;
 }
 
-void ScoreList::print() const {
+void ScoreList::print(std::ostream& os) const {
     for (ConstIterator it = begin(); it != end(); ++it) {
         const ScoreData& data = *it;
-        std::cout << data.score << '\t' << data.userName << '\n';
+        os << data.score << '\t' << data.userName << '\n';
     }
 }

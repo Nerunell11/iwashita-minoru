@@ -2,6 +2,7 @@
 #pragma once
 #include "Iterator.h"
 #include "ScoreData.h"
+#include <ostream>
 
 class Node;
 
@@ -27,5 +28,5 @@ public:
     ConstIterator end() const;
 
     int size() const;
-    void print() const;
+    void print(std::ostream& os) const;
 };

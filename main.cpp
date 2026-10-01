@@ -14,8 +14,6 @@ int main()
     std::ifstream file("Scores.txt");
     if(!file){
         std::cerr <<"Scores.txtが開けません\n";
-        std::cout << "Enterで終了します\n";
-        std::cin.get();
         return 1;
     }
 
@@ -40,8 +38,6 @@ int main()
         //スコアとユーザー名に分解できない場合はエラー
         if(!(iss >> score >> name ) || (iss >> extra)){
             std::cerr << "Scores.txtの" << lineNo << "行目の形式が不正です\n";
-            std::cout << "Enterで終了します\n";
-            std::cin.get();
             return 1;
         }
 
@@ -49,12 +45,14 @@ int main()
         list.pushBack(score,name);
     }
     
-    std::cout << "Scores.txtの中身を出力します\n";
-    list.print();
+    std::ofstream out("result.txt");
+    if (!out){
+        std::cerr << "result.txtを開けません\n";
+        return 1;
+    }
+    list.print(out);
 
-    //終了処理
-    std::cout << "Enterで終了します\n";
-    std::cin.get();
+    //終了
     return 0;
 }
 
