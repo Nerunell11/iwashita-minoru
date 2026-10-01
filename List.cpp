@@ -16,6 +16,7 @@ struct Node{
 };
 
 class ConstIterator{
+    friend class ScoreList;
     protected:
         Node* current;
     
@@ -89,12 +90,31 @@ class ScoreList
     ScoreList(ScoreList&&) = delete;
     ScoreList& operator=(ScoreList&&) = delete;
 
-    //スコアリストにデータを追加
-    void pushBack(int score,const std::string& name){
-        Node* added = new Node { node->prev, node, ScoreData{ score, name } };
-        node->prev->next = added;
-        node->prev = added;
+    //指定した位置の直前にデータを入れる
+    Iterator insert(Iterator pos, const ScoreData& data) {
+    Node* added = new Node{ pos.current->prev, pos.current, data };
+    pos.current->prev->next = added;
+    pos.current->prev = added;
+    return Iterator(added);
     }
+
+    //スコアリストにデータを追加
+    void pushBack(int score, const std::string& name) {
+        insert(end(), ScoreData{ score, name });
+    }
+
+    Iterator erase(Iterator pos){
+        Node* target = pos.current;
+        Node* next = target->next;
+
+        target->prev->next = target->next;
+        target->next->prev = target->prev;
+        delete target;
+
+        return Iterator(next);
+    }
+
+
 
     Iterator begin(){
         return Iterator(node->next);
@@ -112,6 +132,13 @@ class ScoreList
         return ConstIterator(node);
     }
 
+    int size() const {
+        int count = 0;
+        for(ConstIterator it = begin(); it != end(); ++it){
+            ++count;
+        }
+        return count;
+    }
 
     //スコアリストを出力
     void print() const {
