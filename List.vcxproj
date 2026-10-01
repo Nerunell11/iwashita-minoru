@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{b01994a4-e43d-4246-8ce8-3569a2f07d84}</ProjectGuid>
+    <ProjectGuid>{E3AF6387-7B3E-2CD8-3072-D11758BA1899}</ProjectGuid>
     <RootNamespace>List</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -139,7 +139,17 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="List.cpp" />
+    <ClCompile Include="ConstIterator.cpp" />
+    <ClCompile Include="Iterator.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ScoreData.h" />
+    <ClCompile Include="ScoreList.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ConstIterator.h" />
+    <ClInclude Include="Iterator.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="ScoreList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
