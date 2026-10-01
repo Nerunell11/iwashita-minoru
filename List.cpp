@@ -15,7 +15,51 @@ struct Node{
     ScoreData data;
 };
 
+class ConstIterator{
+    protected:
+        Node* current;
+    
+    public:
+        explicit ConstIterator(Node* node ) : current(node){}
+        
+        ConstIterator(const ConstIterator& other) : current(other.current){}
 
+        ConstIterator& operator=(const ConstIterator& other){
+            current = other.current;
+            return *this;
+        }
+
+        ConstIterator& operator++(){
+            current = current->next;
+            return *this;
+        }
+
+        ConstIterator& operator--(){
+            current = current->prev;
+            return *this;
+        }
+
+        const ScoreData& operator*() const {
+            return current->data;
+        }
+
+        bool operator==(const ConstIterator& other) const {
+            return current == other.current;
+        }
+
+        bool operator!=(const ConstIterator& other) const {
+            return current != other.current;
+        }
+};
+
+class Iterator : public ConstIterator{
+    public:
+        explicit Iterator(Node* node) : ConstIterator(node){}
+
+        ScoreData& operator*(){
+            return current->data;
+        }
+};
 
 class ScoreList
 {
@@ -52,10 +96,28 @@ class ScoreList
         node->prev = added;
     }
 
+    Iterator begin(){
+        return Iterator(node->next);
+    }
+
+    ConstIterator begin() const {
+        return ConstIterator(node->next);
+    }
+
+    Iterator end(){
+        return Iterator(node);
+    }
+
+    ConstIterator end() const {
+        return ConstIterator(node);
+    }
+
+
     //スコアリストを出力
     void print() const {
-        for (const Node* p = node->next; p != node; p = p->next){
-            std::cout << p->data.score << '\t' << p->data.userName << '\n';
+        for(ConstIterator it = begin(); it != end(); ++it){
+            const ScoreData& data = *it;
+            std::cout <<data.score << '\t' << data.userName << '\n';
         }
     }
 };
