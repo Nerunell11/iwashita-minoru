@@ -4,10 +4,22 @@
 
 class Node;
 
+/**
+ * @brief スコアとユーザー名を保持する双方向リストのイテレータ
+ * 
+ * 読み書き可能なイテレータ
+ * コピーとムーブは禁止し、所有権はリスト自身が持つ
+ * 親クラスのConstIteratorを継承している
+ */
 class Iterator : public ConstIterator {
     friend class ScoreList;
 
     public:
+    /**
+     * @brief イテレータの現在のデータを取得する
+     * 
+     * @return ScoreData& 現在のデータ
+     */
     ScoreData& operator*() const;
     
     private:
