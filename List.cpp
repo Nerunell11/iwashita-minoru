@@ -4,27 +4,39 @@
 #include <fstream>
 #include <sstream>
 
-struct Node{
-
+struct ScoreData {
     int score;
-    std::string name;
-    Node* prev;
-    Node* next;
-
+    std::string userName;
 };
 
-struct ScoreList{
-    Node* head = nullptr;
-    Node* tail = nullptr;
+struct Node{
+    Node* prev;
+    Node* next;
+    ScoreData data;
+};
 
-    ScoreList() = default;
+
+
+class ScoreList
+{
+    private:
+        Node* node;
+
+    public:
+    ScoreList(){
+        node = new Node{ nullptr, nullptr, ScoreData{} };
+        node->prev = node;
+        node->next = node;
+    }
+    
     ~ScoreList(){
-        Node* p = head;
-        while(p != nullptr){
+        Node* p = node->next;
+        while(p != node){
             Node* next = p->next;
             delete p;
             p = next;
         }
+        delete node;
     }
     
     //複製・移動禁止
@@ -35,27 +47,17 @@ struct ScoreList{
 
     //スコアリストにデータを追加
     void pushBack(int score,const std::string& name){
-        Node* node = new Node { score,name,tail,nullptr };
-        if(tail != nullptr){
-            tail->next = node;
-        }
-
-        else{
-            head = node;
-        }
-
-        tail = node;
+        Node* added = new Node { node->prev, node, ScoreData{ score, name } };
+        node->prev->next = added;
+        node->prev = added;
     }
-
 
     //スコアリストを出力
     void print() const {
-        for (const Node* p = head; p != nullptr; p = p->next){
-            std::cout << p->score << '\t' << p->name << '\n';
+        for (const Node* p = node->next; p != node; p = p->next){
+            std::cout << p->data.score << '\t' << p->data.userName << '\n';
         }
-
     }
-
 };
 
 int main()
