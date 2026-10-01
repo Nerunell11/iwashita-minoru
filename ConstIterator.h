@@ -8,11 +8,7 @@ class ScoreList;
 
 class ConstIterator {
     friend class ScoreList;
-protected:
-    Node* current;
-
 public:
-    explicit ConstIterator(Node* node);
     ConstIterator(const ConstIterator& other);
     ConstIterator& operator=(const ConstIterator& other);
     ConstIterator& operator++();
@@ -20,4 +16,8 @@ public:
     const ScoreData& operator*() const;
     bool operator==(const ConstIterator& other) const;
     bool operator!=(const ConstIterator& other) const;
+
+    protected:
+    explicit ConstIterator(Node* node);
+    Node* current;
 };

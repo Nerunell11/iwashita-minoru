@@ -142,7 +142,7 @@
     <ClCompile Include="ConstIterator.cpp" />
     <ClCompile Include="Iterator.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ScoreData.h" />
+    <ClInclude Include="ScoreData.h" />
     <ClCompile Include="ScoreList.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -5,7 +5,11 @@
 class Node;
 
 class Iterator : public ConstIterator {
-public:
+    friend class ScoreList;
+
+    public:
+    ScoreData& operator*() const;
+    
+    private:
     explicit Iterator(Node* node);
-    ScoreData& operator*();
 };

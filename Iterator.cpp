@@ -4,6 +4,6 @@
 
 Iterator::Iterator(Node* node) : ConstIterator(node) {}
 
-ScoreData& Iterator::operator*() {
+ScoreData& Iterator::operator*() const {
     return current->data;
 }
