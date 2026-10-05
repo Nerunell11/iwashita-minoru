@@ -6,6 +6,8 @@
  #include "pch.h"
  #include "ScoreList.h"
  
+using Iterator = ScoreList::Iterator;
+using ConstIterator = ScoreList::ConstIterator;
  
  //===============================================================================
  //テストの番号を振っています
@@ -35,7 +37,7 @@ namespace Test_List
      */
      TEST(GetDataCount,T001) {
       ScoreList list;
-      list.pushBack(1, "test");
+      list.insert(list.end(), ScoreData{ 1, "test" });
       EXPECT_EQ(1, list.size());
     }
     
@@ -79,7 +81,7 @@ namespace Test_List
      */
     TEST(GetDataCount,T005) {
       ScoreList list;
-      list.pushBack(1, "test");
+      list.insert(list.end(), ScoreData{ 1, "test" });
       list.erase(list.begin());
       EXPECT_EQ(0, list.size());
     }
@@ -92,7 +94,7 @@ namespace Test_List
      */
     TEST(GetDataCount,T006) {
       ScoreList list;
-      list.pushBack(1, "test");
+      list.insert(list.end(), ScoreData{ 1, "test" });
       Iterator invaild;
       list.erase(invaild);
       EXPECT_EQ(1, list.size());
@@ -155,8 +157,8 @@ namespace Test_List
       ScoreList list;
 
       //事前準備
-      list.pushBack(1, "first");
-      list.pushBack(2, "second");
+      list.insert(list.end(), ScoreData{ 1, "first" });
+      list.insert(list.end(), ScoreData{ 2, "second" });
       
       //挿入
       Iterator ret = list.insert(list.begin(), ScoreData{0, "new"});
@@ -186,8 +188,8 @@ namespace Test_List
       ScoreList list;
 
       //事前準備
-      list.pushBack(1, "first");
-      list.pushBack(2, "second");
+      list.insert(list.end(), ScoreData{ 1, "first" });
+      list.insert(list.end(), ScoreData{ 2, "second" });
       
       //挿入
       list.insert(list.end(), ScoreData{3, "third"});
@@ -211,9 +213,9 @@ namespace Test_List
         ScoreList list;
       
         //事前準備
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
-        list.pushBack(3, "third");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
+       list.insert(list.end(), ScoreData{ 3, "third" });
       
         //挿入（2番目の位置）
         Iterator it = list.begin();
@@ -259,20 +261,20 @@ namespace Test_List
       ScoreList list;
     
       //事前準備
-      list.pushBack(1, "first");
-      list.pushBack(2, "second");
-      list.pushBack(3, "third");
+      list.insert(list.end(), ScoreData{ 1, "first" });
+      list.insert(list.end(), ScoreData{ 2, "second" });
+     list.insert(list.end(), ScoreData{ 3, "third" });
     
       //挿入
       const ScoreList& clist = list;
-      ConstIterator pos = clist.begin();
+      ConstIterator pos = list.cbegin();
       ++pos;
     
       ConstIterator inserted = list.insert(pos, ScoreData{0, "new"});
       ASSERT_EQ(4, list.size());
     
       //元の先頭は変わらないこと
-      ConstIterator cur = clist.begin();
+      ConstIterator cur = list.cbegin();
       EXPECT_EQ(1, (*cur).score);
       ++cur;
 
@@ -290,7 +292,7 @@ namespace Test_List
       EXPECT_EQ(3, (*cur).score);
       ++cur;
       
-      EXPECT_TRUE(cur == clist.end());
+      EXPECT_TRUE(cur == list.cend());
     }
 
     /**
@@ -302,8 +304,8 @@ namespace Test_List
      */
      TEST(Insert, T014) {
       ScoreList list;
-      list.pushBack(1, "first");
-      list.pushBack(2, "second");
+      list.insert(list.end(), ScoreData{ 1, "first" });
+      list.insert(list.end(), ScoreData{ 2, "second" });
   
       //リストの参照がないイテレータ
       Iterator invalid;
@@ -312,7 +314,7 @@ namespace Test_List
   
       //別リストの要素を指すイテレータ
       ScoreList other;
-      other.pushBack(100, "other");
+      other.insert(other.end(), ScoreData{ 100, "other" });
       list.insert(other.begin(), ScoreData{ 9, "bad" });
       ASSERT_EQ(2, list.size());
       
@@ -369,8 +371,8 @@ namespace Test_List
      */
     TEST(Erase,T017){
       ScoreList list;
-      list.pushBack(1, "first");
-      list.pushBack(2, "second");
+      list.insert(list.end(), ScoreData{ 1, "first" });
+      list.insert(list.end(), ScoreData{ 2, "second" });
       
       //先頭要素の削除
       Iterator next = list.erase(list.begin());
@@ -393,8 +395,8 @@ namespace Test_List
      */
      TEST(Erase,T018){
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
 
         //末尾イテレータを渡して削除
         Iterator next = list.erase(list.end());
@@ -426,9 +428,9 @@ namespace Test_List
      */
      TEST(Erase,T019){
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
-        list.pushBack(3, "third");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
+       list.insert(list.end(), ScoreData{ 3, "third" });
 
         //先頭でも末尾でもないイテレータ
         Iterator pos = list.begin();
@@ -464,33 +466,33 @@ namespace Test_List
      */
      TEST(Erase,T020){
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
-        list.pushBack(3, "third");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
+       list.insert(list.end(), ScoreData{ 3, "third" });
       
         //ConstIteratorを指定して真ん中を削除
         const ScoreList& clist = list;
-        ConstIterator pos = clist.begin();
+        ConstIterator pos = list.cbegin();
         ++pos;
         Iterator next = list.erase(pos);
       
         ASSERT_EQ(2, list.size());
       
         //格納済みの要素に影響がないか
-        ConstIterator it = clist.begin();
+        ConstIterator it = list.cbegin();
         EXPECT_EQ(1, (*it).score);
         EXPECT_EQ("first", (*it).userName);
         ++it;
         EXPECT_EQ(3, (*it).score);
         EXPECT_EQ("third", (*it).userName);
         ++it;
-        EXPECT_TRUE(it == clist.end());
+        EXPECT_TRUE(it == list.cend());
       
         //戻り値が削除した要素の次を指しているか
         EXPECT_EQ(3, (*next).score);
         EXPECT_EQ("third", (*next).userName);
         ++next;
-        EXPECT_TRUE(next == clist.end());
+        EXPECT_TRUE(next == list.cend());
       }
 
     /**
@@ -502,8 +504,8 @@ namespace Test_List
      */
      TEST(Erase, T021) {
       ScoreList list;
-      list.pushBack(1, "first");
-      list.pushBack(2, "second");
+      list.insert(list.end(), ScoreData{ 1, "first" });
+      list.insert(list.end(), ScoreData{ 2, "second" });
   
       //リストの参照がないイテレータ
       Iterator invalid;
@@ -513,7 +515,7 @@ namespace Test_List
   
       //別リストの要素を指すイテレータ
       ScoreList other;
-      other.pushBack(100, "other");
+      other.insert(other.end(), ScoreData{ 100, "other" });
       ret = list.erase(other.begin());
       EXPECT_TRUE(ret == list.end());
       ASSERT_EQ(2, list.size());
@@ -569,7 +571,7 @@ namespace Test_List
      */
     TEST(BeginTest,T024){
       ScoreList list;
-      list.pushBack(1, "first");
+      list.insert(list.end(), ScoreData{ 1, "first" });
       ASSERT_EQ(1,list.size());
 
       Iterator it = list.begin();
@@ -587,8 +589,8 @@ namespace Test_List
      */
     TEST(BeginTest,T025){
       ScoreList list;
-      list.pushBack(1, "first");
-      list.pushBack(2, "second");
+      list.insert(list.end(), ScoreData{ 1, "first" });
+      list.insert(list.end(), ScoreData{ 2, "second" });
 
       Iterator it = list.begin();
       ASSERT_EQ(2,list.size());
@@ -613,9 +615,9 @@ namespace Test_List
         // 先頭に挿入するケース
         {
           ScoreList list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
       
           list.insert(list.begin(), ScoreData{ 0, "zero" });
           ASSERT_EQ(4, list.size());
@@ -628,9 +630,9 @@ namespace Test_List
         // 中央に挿入するケース
         {
           ScoreList list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
       
           Iterator mid = list.begin();
           ++mid;
@@ -645,9 +647,9 @@ namespace Test_List
         // 末尾に挿入するケース
         {
           ScoreList list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
       
           list.insert(list.end(), ScoreData{ 4, "fourth" });
           ASSERT_EQ(4, list.size());
@@ -669,9 +671,9 @@ namespace Test_List
         // 先頭を削除するケース
         {
           ScoreList list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
 
           list.erase(list.begin());
           ASSERT_EQ(2, list.size());
@@ -684,9 +686,9 @@ namespace Test_List
         // 中央を削除するケース
         {
           ScoreList list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
 
           Iterator mid = list.begin();
           ++mid;
@@ -701,9 +703,9 @@ namespace Test_List
         // 末尾を削除するケース
         {
           ScoreList list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
 
           Iterator last = list.begin();
           ++last;
@@ -742,8 +744,8 @@ namespace Test_List
     TEST(ConstBeginTest,T029){
       ScoreList list;
       const ScoreList& clist = list;
-      ConstIterator it = clist.begin();
-      EXPECT_TRUE(it == clist.end());
+      ConstIterator it = list.cbegin();
+      EXPECT_TRUE(it == list.cend());
     }
 
     /**
@@ -756,14 +758,14 @@ namespace Test_List
       ScoreList list;
       const ScoreList& clist = list;
 
-      list.pushBack(1, "first");
-      ASSERT_EQ(1,clist.size());
+      list.insert(list.end(), ScoreData{ 1, "first" });
+      ASSERT_EQ(1,list.size());
 
-      ConstIterator it = clist.begin();
+      ConstIterator it = list.cbegin();
       EXPECT_EQ(1, (*it).score);
       EXPECT_EQ("first", (*it).userName);
       ++it;
-      EXPECT_TRUE(it == clist.end());
+      EXPECT_TRUE(it == list.cend());
     }
 
     /**
@@ -776,11 +778,11 @@ namespace Test_List
       ScoreList list;
       const ScoreList& clist = list;
 
-      list.pushBack(1, "first");
-      list.pushBack(2, "second");
-      ASSERT_EQ(2,clist.size());
+      list.insert(list.end(), ScoreData{ 1, "first" });
+      list.insert(list.end(), ScoreData{ 2, "second" });
+      ASSERT_EQ(2,list.size());
 
-      ConstIterator it = clist.begin();
+      ConstIterator it = list.cbegin();
       EXPECT_EQ(1, (*it).score);
       EXPECT_EQ("first", (*it).userName);
       
@@ -802,14 +804,14 @@ namespace Test_List
         {
           ScoreList list;
           const ScoreList& clist = list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
       
-          list.insert(clist.begin(), ScoreData{ 0, "zero" });
-          ASSERT_EQ(4,clist.size());
+          list.insert(list.cbegin(), ScoreData{ 0, "zero" });
+          ASSERT_EQ(4,list.size());
       
-          ConstIterator it = clist.begin();
+          ConstIterator it = list.cbegin();
           EXPECT_EQ(0, (*it).score);
           EXPECT_EQ("zero", (*it).userName);
         }
@@ -818,16 +820,16 @@ namespace Test_List
         {
           ScoreList list;
           const ScoreList& clist = list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
       
-          ConstIterator mid = clist.begin();
+          ConstIterator mid = list.cbegin();
           ++mid;
           list.insert(mid, ScoreData{ 9, "middle" });
-          ASSERT_EQ(4, clist.size());
+          ASSERT_EQ(4, list.size());
       
-          ConstIterator it = clist.begin();
+          ConstIterator it = list.cbegin();
           EXPECT_EQ(1, (*it).score);
           EXPECT_EQ("first", (*it).userName);
         }
@@ -836,14 +838,14 @@ namespace Test_List
         {
           ScoreList list;
           const ScoreList& clist = list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
       
-          list.insert(clist.end(), ScoreData{ 4, "fourth" });
-          ASSERT_EQ(4, clist.size());
+          list.insert(list.cend(), ScoreData{ 4, "fourth" });
+          ASSERT_EQ(4, list.size());
       
-          ConstIterator it = clist.begin();
+          ConstIterator it = list.cbegin();
           EXPECT_EQ(1, (*it).score);
           EXPECT_EQ("first", (*it).userName);
         }
@@ -861,14 +863,14 @@ namespace Test_List
         {
           ScoreList list;
           const ScoreList& clist = list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
       
-          list.erase(clist.begin());
-          ASSERT_EQ(2,clist.size());
+          list.erase(list.cbegin());
+          ASSERT_EQ(2,list.size());
       
-          ConstIterator it = clist.begin();
+          ConstIterator it = list.cbegin();
           EXPECT_EQ(2, (*it).score);
           EXPECT_EQ("second", (*it).userName);
         }
@@ -877,16 +879,16 @@ namespace Test_List
         {
           ScoreList list;
           const ScoreList& clist = list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
       
-          ConstIterator mid = clist.begin();
+          ConstIterator mid = list.cbegin();
           ++mid;
           list.erase(mid);
-          ASSERT_EQ(2,clist.size());
+          ASSERT_EQ(2,list.size());
       
-          ConstIterator it = clist.begin();
+          ConstIterator it = list.cbegin();
           EXPECT_EQ(1, (*it).score);
           EXPECT_EQ("first", (*it).userName);
         }
@@ -895,16 +897,16 @@ namespace Test_List
         {
           ScoreList list;
           const ScoreList& clist = list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
       
-          ConstIterator last = clist.end();
+          ConstIterator last = list.cend();
           --last;
           list.erase(last);
-          ASSERT_EQ(2,clist.size());
+          ASSERT_EQ(2,list.size());
       
-          ConstIterator it = clist.begin();
+          ConstIterator it = list.cbegin();
           EXPECT_EQ(1, (*it).score);
           EXPECT_EQ("first", (*it).userName);
         }
@@ -944,7 +946,7 @@ namespace Test_List
      */
     TEST(EndTest,T036){
       ScoreList list;
-      list.pushBack(1, "first");
+      list.insert(list.end(), ScoreData{ 1, "first" });
       ASSERT_EQ(1,list.size());
 
       Iterator it = list.end();
@@ -964,8 +966,8 @@ namespace Test_List
      */
     TEST(EndTest,T037){
       ScoreList list;
-      list.pushBack(1, "first");
-      list.pushBack(2, "second");
+      list.insert(list.end(), ScoreData{ 1, "first" });
+      list.insert(list.end(), ScoreData{ 2, "second" });
       ASSERT_EQ(2,list.size());
 
       Iterator it = list.end();
@@ -988,9 +990,9 @@ namespace Test_List
     // 先頭に挿入するケース
     {
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
-        list.pushBack(3, "third");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
+       list.insert(list.end(), ScoreData{ 3, "third" });
 
         list.insert(list.begin(), ScoreData{ 0, "zero" });
         ASSERT_EQ(4,list.size());
@@ -1006,9 +1008,9 @@ namespace Test_List
     // 中央に挿入するケース
     {
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
-        list.pushBack(3, "third");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
+       list.insert(list.end(), ScoreData{ 3, "third" });
 
         Iterator mid = list.begin();
         ++mid;
@@ -1026,9 +1028,9 @@ namespace Test_List
     // 末尾に挿入するケース
     {
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
-        list.pushBack(3, "third");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
+       list.insert(list.end(), ScoreData{ 3, "third" });
 
         list.insert(list.end(), ScoreData{ 4, "fourth" });
         ASSERT_EQ(4,list.size());
@@ -1054,9 +1056,9 @@ namespace Test_List
         // 末尾の要素を削除するケース
         {
           ScoreList list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
       
           // (3, "third")
           Iterator last = list.end();
@@ -1075,9 +1077,9 @@ namespace Test_List
         // 中央の要素を削除するケース
         {
           ScoreList list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
       
           // (2, "second")
           Iterator mid = list.begin();
@@ -1096,9 +1098,9 @@ namespace Test_List
         // 先頭の要素を削除するケース
         {
           ScoreList list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
       
           // (1, "first")
           list.erase(list.begin());
@@ -1136,8 +1138,8 @@ namespace Test_List
     TEST(ConstEndTest,T041){
       ScoreList list;
       const ScoreList& clist = list;
-      ConstIterator it = clist.end();
-      EXPECT_TRUE(it == clist.end());
+      ConstIterator it = list.cend();
+      EXPECT_TRUE(it == list.cend());
     }
 
     /**
@@ -1150,17 +1152,17 @@ namespace Test_List
       ScoreList list;
       const ScoreList& clist = list;
     
-      list.pushBack(1, "first");
-      ASSERT_EQ(1, clist.size());
+      list.insert(list.end(), ScoreData{ 1, "first" });
+      ASSERT_EQ(1, list.size());
 
-      ConstIterator it = clist.end();
+      ConstIterator it = list.cend();
       --it;
 
       EXPECT_EQ(1, (*it).score);
       EXPECT_EQ("first", (*it).userName);
       
       ++it;
-      EXPECT_TRUE(it == clist.end());
+      EXPECT_TRUE(it == list.cend());
     }
     
     /**
@@ -1173,18 +1175,18 @@ namespace Test_List
       ScoreList list;
       const ScoreList& clist = list;
 
-      list.pushBack(1, "first");
-      list.pushBack(2, "second");
-      ASSERT_EQ(2, clist.size());
+      list.insert(list.end(), ScoreData{ 1, "first" });
+      list.insert(list.end(), ScoreData{ 2, "second" });
+      ASSERT_EQ(2, list.size());
 
-      ConstIterator it = clist.end();
+      ConstIterator it = list.cend();
       --it;
 
       EXPECT_EQ(2, (*it).score);
       EXPECT_EQ("second", (*it).userName);
       
       ++it;
-      EXPECT_TRUE(it == clist.end());
+      EXPECT_TRUE(it == list.cend());
     }
 
     /**
@@ -1199,59 +1201,59 @@ namespace Test_List
         {
           ScoreList list;
           const ScoreList& clist = list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
       
-          list.insert(clist.begin(), ScoreData{ 0, "zero" });
-          ASSERT_EQ(4,clist.size());
+          list.insert(list.cbegin(), ScoreData{ 0, "zero" });
+          ASSERT_EQ(4,list.size());
       
-          ConstIterator it = clist.end();
+          ConstIterator it = list.cend();
           --it;
           EXPECT_EQ(3, (*it).score);
           EXPECT_EQ("third", (*it).userName);
           ++it;
-          EXPECT_TRUE(it == clist.end());
+          EXPECT_TRUE(it == list.cend());
         }
       
         // 中央に挿入するケース
         {
           ScoreList list;
           const ScoreList& clist = list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
       
-          ConstIterator mid = clist.begin();
+          ConstIterator mid = list.cbegin();
           ++mid;
           list.insert(mid, ScoreData{ 9, "middle" });
-          ASSERT_EQ(4,clist.size());
+          ASSERT_EQ(4,list.size());
       
-          ConstIterator it = clist.end();
+          ConstIterator it = list.cend();
           --it;
           EXPECT_EQ(3, (*it).score);
           EXPECT_EQ("third", (*it).userName);
           ++it;
-          EXPECT_TRUE(it == clist.end());
+          EXPECT_TRUE(it == list.cend());
         }
       
         // 末尾に挿入するケース
         {
           ScoreList list;
           const ScoreList& clist = list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
       
-          list.insert(clist.end(), ScoreData{ 4, "fourth" });
-          ASSERT_EQ(4,clist.size());
+          list.insert(list.cend(), ScoreData{ 4, "fourth" });
+          ASSERT_EQ(4,list.size());
       
-          ConstIterator it = clist.end();
+          ConstIterator it = list.cend();
           --it;
           EXPECT_EQ(4, (*it).score);
           EXPECT_EQ("fourth", (*it).userName);
           ++it;
-          EXPECT_TRUE(it == clist.end());
+          EXPECT_TRUE(it == list.cend());
         }
       }
 
@@ -1267,59 +1269,59 @@ namespace Test_List
         {
           ScoreList list;
           const ScoreList& clist = list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
-          ConstIterator last = clist.end();
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
+          ConstIterator last = list.cend();
           --last;                     // (3, "third")
 
           list.erase(last);
-          ASSERT_EQ(2,clist.size());
+          ASSERT_EQ(2,list.size());
 
-          ConstIterator it = clist.end();
+          ConstIterator it = list.cend();
           --it;
           EXPECT_EQ(2, (*it).score);
           EXPECT_EQ("second", (*it).userName);
           ++it;
-          EXPECT_TRUE(it == clist.end());
+          EXPECT_TRUE(it == list.cend());
         }
         // 中央の要素を削除するケース
         {
           ScoreList list;
           const ScoreList& clist = list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
-          ConstIterator mid = clist.begin();
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
+          ConstIterator mid = list.cbegin();
           ++mid;                      // (2, "second")
           
           list.erase(mid);
-          ASSERT_EQ(2,clist.size());
+          ASSERT_EQ(2,list.size());
           
-          ConstIterator it = clist.end();
+          ConstIterator it = list.cend();
           --it;
           EXPECT_EQ(3, (*it).score);
           EXPECT_EQ("third", (*it).userName);
           ++it;
-          EXPECT_TRUE(it == clist.end());
+          EXPECT_TRUE(it == list.cend());
         }
         // 先頭の要素を削除するケース
         {
           ScoreList list;
           const ScoreList& clist = list;
-          list.pushBack(1, "first");
-          list.pushBack(2, "second");
-          list.pushBack(3, "third");
+          list.insert(list.end(), ScoreData{ 1, "first" });
+          list.insert(list.end(), ScoreData{ 2, "second" });
+         list.insert(list.end(), ScoreData{ 3, "third" });
 
-          list.erase(clist.begin());  // (1, "first")
-          ASSERT_EQ(2,clist.size());
+          list.erase(list.cbegin());  // (1, "first")
+          ASSERT_EQ(2,list.size());
 
-          ConstIterator it = clist.end();
+          ConstIterator it = list.cend();
           --it;
           EXPECT_EQ(3, (*it).score);
           EXPECT_EQ("third", (*it).userName);
           ++it;
-          EXPECT_TRUE(it == clist.end());
+          EXPECT_TRUE(it == list.cend());
         }
       }
 
