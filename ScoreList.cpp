@@ -1,7 +1,5 @@
 ﻿//2026-10-01 iwashita-minoru
 #include "ScoreList.h"
-#include "Node.h"
-#include <ostream>
 
 ScoreList::ScoreList() {
     node = new Node(nullptr, nullptr, ScoreData{});
@@ -19,7 +17,7 @@ ScoreList::~ScoreList() {
     delete node;
 }
 
-Iterator ScoreList::insert(ConstIterator pos, const ScoreData& data) {
+ScoreList::Iterator ScoreList::insert(ConstIterator pos, const ScoreData& data) {
     //不正なイテレータが渡された場合はエラー
     if (pos.owner != this) {
         return Iterator(pos.current, this);
@@ -31,11 +29,7 @@ Iterator ScoreList::insert(ConstIterator pos, const ScoreData& data) {
     return Iterator(added, this);
 }
 
-void ScoreList::pushBack(int score, const std::string& name) {
-    insert(end(), ScoreData{ score, name });
-}
-
-Iterator ScoreList::erase(ConstIterator pos) {
+ScoreList::Iterator ScoreList::erase(ConstIterator pos) {
     //不正なイテレータが渡された場合はエラー
     if(pos.owner != this || pos.current == nullptr || pos.current == node) {
         return end();
@@ -51,33 +45,35 @@ Iterator ScoreList::erase(ConstIterator pos) {
     return Iterator(next, this);
 }
 
-Iterator ScoreList::begin() {
+ScoreList::Iterator ScoreList::begin() {
     return Iterator(node->next, this);
 }
 
-ConstIterator ScoreList::begin() const {
+ScoreList::ConstIterator ScoreList::begin() const {
+    return cbegin();
+}
+
+ScoreList::ConstIterator ScoreList::cbegin() const {
     return ConstIterator(node->next, this);
 }
 
-Iterator ScoreList::end() {
+ScoreList::Iterator ScoreList::end() {
     return Iterator(node, this);
 }
 
-ConstIterator ScoreList::end() const {
+ScoreList::ConstIterator ScoreList::end() const {
+    return cend();
+}
+
+ScoreList::ConstIterator ScoreList::cend() const {
     return ConstIterator(node, this);
 }
 
 int ScoreList::size() const {
     int count = 0;
-    for (ConstIterator it = begin(); it != end(); ++it) {
+    for (ConstIterator it = cbegin(); it != cend(); ++it) {
         ++count;
     }
     return count;
 }
 
-void ScoreList::print(std::ostream& os) const {
-    for (ConstIterator it = begin(); it != end(); ++it) {
-        const ScoreData& data = *it;
-        os << data.score << '\t' << data.userName << '\n';
-    }
-}
