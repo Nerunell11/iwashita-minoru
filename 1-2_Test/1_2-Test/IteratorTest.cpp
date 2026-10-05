@@ -5,6 +5,9 @@
  *********************************************************************************/
  #include "pch.h"
  #include "ScoreList.h"
+
+using Iterator = ScoreList::Iterator;
+using ConstIterator = ScoreList::ConstIterator;
  
  
  //===============================================================================
@@ -34,7 +37,7 @@
        */
       TEST(DereferenceTest,T101){
         ScoreList list;
-        list.pushBack(1, "first");
+        list.insert(list.end(), ScoreData{ 1, "first" });
         ASSERT_EQ(1,list.size());
 
         Iterator it = list.begin();
@@ -72,7 +75,7 @@
        */
       TEST(DereferenceTest,T104){
         ScoreList list;
-        list.pushBack(1, "first");
+        list.insert(list.end(), ScoreData{ 1, "first" });
         ASSERT_EQ(1,list.size());
 
         Iterator it = list.end();
@@ -115,7 +118,7 @@
        */
       TEST(IncrementTest,T107){
         ScoreList list;
-        list.pushBack(1, "first");
+        list.insert(list.end(), ScoreData{ 1, "first" });
         ASSERT_EQ(1,list.size());
 
         Iterator it = list.end();
@@ -130,8 +133,8 @@
        */
        TEST(IncrementTest, T108) {
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
         ASSERT_EQ(2, list.size());
 
         Iterator it = list.begin();
@@ -156,8 +159,8 @@
        */
        TEST(IncrementTest, T109) {
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
         ASSERT_EQ(2, list.size());
 
         Iterator it = list.begin();
@@ -183,8 +186,8 @@
        */
        TEST(IncrementTest, T110) {
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
         ASSERT_EQ(2, list.size());
         
         Iterator it = list.begin();
@@ -236,7 +239,7 @@
        */
       TEST(DecrementTest,T113){
         ScoreList list;
-        list.pushBack(1, "first");
+        list.insert(list.end(), ScoreData{ 1, "first" });
         ASSERT_EQ(1,list.size());
 
         Iterator it = list.begin();
@@ -251,8 +254,8 @@
        */
       TEST(DecrementTest,T114){
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
         ASSERT_EQ(2,list.size());
 
         Iterator it = list.end();
@@ -278,8 +281,8 @@
        */
       TEST(DecrementTest,T115){
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
         ASSERT_EQ(2,list.size());
 
         Iterator it = list.end();
@@ -306,8 +309,8 @@
        */
       TEST(DecrementTest,T116){
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
         ASSERT_EQ(2, list.size());
 
         Iterator it = list.end();
@@ -345,8 +348,8 @@
        */
       TEST(CopyTest,T118){
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
         ASSERT_EQ(2,list.size());
 
         Iterator it = list.begin();
@@ -385,8 +388,8 @@
        */
       TEST(AssignTest,T120){
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
         ASSERT_EQ(2, list.size());
 
         Iterator it = list.begin();
@@ -433,7 +436,7 @@
        */
       TEST(EqualTest,T122){
         ScoreList list;
-        list.pushBack(1, "first");
+        list.insert(list.end(), ScoreData{ 1, "first" });
         ASSERT_EQ(1,list.size());
 
         Iterator a = list.begin();
@@ -449,8 +452,8 @@
        */
       TEST(EqualTest,T123){
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
         ASSERT_EQ(2, list.size());
 
         Iterator a = list.begin();
@@ -486,7 +489,7 @@
        */
       TEST(NotEqualTest,T125){
         ScoreList list;
-        list.pushBack(1, "first");
+        list.insert(list.end(), ScoreData{ 1, "first" });
         ASSERT_EQ(1, list.size());
 
         Iterator a = list.begin();
@@ -501,8 +504,8 @@
        */
       TEST(NotEqualTest,T126){
         ScoreList list;
-        list.pushBack(1, "first");
-        list.pushBack(2, "second");
+        list.insert(list.end(), ScoreData{ 1, "first" });
+        list.insert(list.end(), ScoreData{ 2, "second" });
         ASSERT_EQ(2, list.size());
 
         Iterator a = list.begin();

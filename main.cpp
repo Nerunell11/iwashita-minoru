@@ -6,6 +6,15 @@
 #include "ScoreData.h"
 #include "ScoreList.h"
 
+namespace { //mainで使う関数を定義します
+    void printList(const ScoreList& list, std::ostream& os){
+        for (const ScoreData& data : list ){
+            os << data.score << '\t' << data.userName << '\n';
+        }
+    }
+}
+
+
 int main()
 {
     std::cout << "Scores.txtのスコアとユーザー名を格納します\n"; 
@@ -42,7 +51,7 @@ int main()
         }
 
         //スコアリストに追加
-        list.pushBack(score,name);
+        list.insert(list.end(), ScoreData { score, name });
     }
     
     std::ofstream out("result.txt");
@@ -50,8 +59,8 @@ int main()
         std::cerr << "result.txtを開けません\n";
         return 1;
     }
-    list.print(out);
-    list.print(std::cout);
+    printList(list, out);
+    printList(list, std::cout);
 
     //終了
     return 0;

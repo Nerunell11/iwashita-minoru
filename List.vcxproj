@@ -146,9 +146,6 @@
     <ClCompile Include="ScoreList.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ConstIterator.h" />
-    <ClInclude Include="Iterator.h" />
-    <ClInclude Include="Node.h" />
     <ClInclude Include="ScoreList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

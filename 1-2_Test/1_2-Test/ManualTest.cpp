@@ -7,11 +7,13 @@
 //--------------------------------------------------------------------------------
 // ファイル依存関係
 //--------------------------------------------------------------------------------
-#include <gtest/gtest.h>
-
 #include "pch.h"
+#include <gtest/gtest.h>
 #include "ScoreList.h"
 #include "ManualTest.h"
+
+using Iterator = ScoreList::Iterator;
+using ConstIterator = ScoreList::ConstIterator;
 
 namespace ex01_List
 {
@@ -37,7 +39,7 @@ namespace ex01_List
     TEST(ManualTest, T015){
 #if defined(ENABLE_T015)
         const ScoreList list;
-        ConstIterator it = list.begin();
+        ConstIterator it = list.cbegin();
         list.insert(it,ScoreData{ 1, "test" });//ここでエラー
 #endif
         SUCCEED();
@@ -52,7 +54,7 @@ namespace ex01_List
 
 #if defined(ENABLE_T022)
         const ScoreList list;
-        list.erase(list.begin());//ここでエラー
+        list.erase(list.cbegin());//ここでエラー
 #endif
         SUCCEED();
     }
@@ -81,8 +83,8 @@ namespace ex01_List
 
 #if defined(ENABLE_T034)
         const ScoreList list;
-        ConstIterator it =list.begin();
-        EXPECT_TRUE(it == list.end());
+        ConstIterator it =list.cbegin();
+        EXPECT_TRUE(it == list.cend());
 #endif
         SUCCEED();
     }
@@ -110,8 +112,8 @@ namespace ex01_List
 
 #if defined(ENABLE_T046)
         const ScoreList list;
-        ConstIterator it = list.end();
-        EXPECT_TRUE(it == list.begin());
+        ConstIterator it = list.cend();
+        EXPECT_TRUE(it == list.cbegin());
 #endif
         SUCCEED();
     }
@@ -128,8 +130,8 @@ namespace ex02_Iterator{
 
 #if defined(ENABLE_T102)
         ScoreList list;
-        list.pushBack(10, "test");
-        ConstIterator it = list.begin();
+        list.insert(list.end(), ScoreData{ 10, "test" });
+        ConstIterator it = list.cbegin();
         (*it).score = 5; //ここでエラー
 #endif
         SUCCEED();
@@ -144,7 +146,7 @@ namespace ex02_Iterator{
 
 #if defined(ENABLE_T117)
         ScoreList list;
-        ConstIterator cit = list.begin();
+        ConstIterator cit = list.cbegin();
         Iterator it(cit); //ここでエラー
 #endif
         SUCCEED();
