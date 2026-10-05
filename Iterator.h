@@ -1,4 +1,4 @@
-//2026-10-01 iwashita-minoru
+﻿//2026-10-01 iwashita-minoru
 #pragma once
 #include "ConstIterator.h"
 
@@ -15,6 +15,8 @@ class Iterator : public ConstIterator {
     friend class ScoreList;
 
     public:
+    Iterator();
+
     /**
      * @brief イテレータの現在のデータを取得する
      * 
@@ -23,5 +25,5 @@ class Iterator : public ConstIterator {
     ScoreData& operator*() const;
     
     private:
-    explicit Iterator(Node* node);
+    explicit Iterator(Node* node, const ScoreList* owner);
 };

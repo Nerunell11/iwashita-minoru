@@ -1,4 +1,4 @@
-//2026-10-01 iwashita-minoru
+﻿//2026-10-01 iwashita-minoru
 #pragma once
 #include <string>
 

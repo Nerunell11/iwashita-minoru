@@ -51,6 +51,7 @@ int main()
         return 1;
     }
     list.print(out);
+    list.print(std::cout);
 
     //終了
     return 0;

@@ -1,4 +1,4 @@
-//2026-10-01 iwashita-minoru
+﻿//2026-10-01 iwashita-minoru
 #pragma once
 #include "Iterator.h"
 #include "ScoreData.h"
@@ -30,7 +30,7 @@ public:
      * @param data 挿入するデータ
      * @return Iterator 挿入後の位置のイテレータ
      */
-    Iterator insert(Iterator pos, const ScoreData& data);
+    Iterator insert(ConstIterator pos, const ScoreData& data);
 
     /**
      * @brief 末尾にデータを追加する
@@ -46,7 +46,7 @@ public:
      * @param pos 削除する位置のイテレータ
      * @return Iterator 削除後の位置のイテレータ
      */
-    Iterator erase(Iterator pos);
+    Iterator erase(ConstIterator pos);
 
 
     /**

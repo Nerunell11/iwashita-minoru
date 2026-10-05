@@ -1,4 +1,4 @@
-//2026-10-01 iwashita-minoru
+﻿//2026-10-01 iwashita-minoru
 #pragma once
 #include "ScoreData.h"
 
@@ -14,6 +14,7 @@ class ScoreList;
 class ConstIterator {
     friend class ScoreList;
 public:
+    ConstIterator();
     ConstIterator(const ConstIterator& other);
     ConstIterator& operator=(const ConstIterator& other);
     /**
@@ -23,12 +24,27 @@ public:
      */
     ConstIterator& operator++();
 
+
+    /**
+     * @brief イテレータを後置インクリメントする
+     *
+     * @return ConstIterator インクリメント前のイテレータ
+     */
+    ConstIterator operator++(int);
+
     /**
      * @brief 
      *
      * @return ConstIterator& デクリメント後のイテレータ
      */
     ConstIterator& operator--();
+
+    /**
+     * @brief イテレータを後置デクリメントする
+     * 
+     * @return ConstIterator デクリメント前のイテレータ
+     */
+    ConstIterator operator--(int);
     
     /**
      * @brief イテレータの現在のデータを取得する
@@ -56,6 +72,32 @@ public:
     bool operator!=(const ConstIterator& other) const;
 
     protected:
-    explicit ConstIterator(Node* node);
+    ConstIterator(Node* node, const ScoreList* owner);
+
+    /**
+     * @brief イテレータが所有者を持っているかどうかを返す
+     * 
+     * @return true 所有者を持っている場合
+     * @return false 所有者を持っていない場合
+     */
+    bool hasOwner() const;
+
+    /**
+     * @brief イテレータが末尾を示すかどうかを返す
+     * 
+     * @return true 末尾を示す場合
+     * @return false 末尾を示していない場合
+     */
+    bool isEnd() const;
+
+    /**
+     * @brief イテレータが先頭を示すかどうかを返す
+     * 
+     * @return true 先頭を示す場合
+     * @return false 先頭を示していない場合
+     */
+    bool isBegin() const;
+
     Node* current;
+    const ScoreList* owner;
 };
