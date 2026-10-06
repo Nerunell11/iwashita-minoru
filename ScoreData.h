@@ -7,6 +7,6 @@
  * 
  */
 struct ScoreData {
-    int score;
-    std::string userName;
+    int score; ///< スコア
+    std::string userName; ///< ユーザー名
 };

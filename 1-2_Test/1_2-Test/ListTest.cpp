@@ -8,6 +8,7 @@
  
 using Iterator = ScoreList::Iterator;
 using ConstIterator = ScoreList::ConstIterator;
+using Result = ScoreList::Result;
  
  //===============================================================================
  //テストの番号を振っています
@@ -69,8 +70,8 @@ namespace Test_List
      */
     TEST(GetDataCount,T004) {
       ScoreList list;
-      Iterator invaild;
-      list.insert(invaild, ScoreData{1, "test"});
+      Iterator invalid;
+      EXPECT_EQ(Result::NoOwner, list.insert(invalid, ScoreData{ 1, "test"}));
       EXPECT_EQ(0, list.size());
     }
     
@@ -94,9 +95,9 @@ namespace Test_List
      */
     TEST(GetDataCount,T006) {
       ScoreList list;
-      list.insert(list.end(), ScoreData{ 1, "test" });
-      Iterator invaild;
-      list.erase(invaild);
+      ASSERT_EQ(Result::Success, list.insert(list.end(), ScoreData{ 1, "test" }));
+      Iterator invalid;
+      EXPECT_EQ(Result::NoOwner, list.erase(invalid));
       EXPECT_EQ(1, list.size());
     }
     
@@ -110,7 +111,7 @@ namespace Test_List
       ScoreList list;
 
       //マイナスにならないこと
-      list.erase(list.begin());
+      EXPECT_EQ(Result::EndIterator, list.erase(list.begin()));
       EXPECT_EQ(0, list.size());
     }
     
@@ -161,7 +162,8 @@ namespace Test_List
       list.insert(list.end(), ScoreData{ 2, "second" });
       
       //挿入
-      Iterator ret = list.insert(list.begin(), ScoreData{0, "new"});
+      Iterator ret;
+      ASSERT_EQ(Result::Success, list.insert(list.begin(), ScoreData {0, "new" }, &ret));
       ASSERT_EQ(3, list.size());
       Iterator it = list.begin();
       
@@ -215,12 +217,13 @@ namespace Test_List
         //事前準備
         list.insert(list.end(), ScoreData{ 1, "first" });
         list.insert(list.end(), ScoreData{ 2, "second" });
-       list.insert(list.end(), ScoreData{ 3, "third" });
+        list.insert(list.end(), ScoreData{ 3, "third" });
       
         //挿入（2番目の位置）
         Iterator it = list.begin();
         ++it;
-        Iterator inserted = list.insert(it, ScoreData{ 0, "new" });
+        Iterator inserted;
+        ASSERT_EQ(Result::Success, list.insert(it,ScoreData { 0, "new" }, &inserted));
         ASSERT_EQ(4, list.size());
       
         Iterator cur = list.begin();
@@ -259,22 +262,23 @@ namespace Test_List
      */
      TEST(Insert, T013) {
       ScoreList list;
+      const ScoreList& clist = list;
     
       //事前準備
       list.insert(list.end(), ScoreData{ 1, "first" });
       list.insert(list.end(), ScoreData{ 2, "second" });
-     list.insert(list.end(), ScoreData{ 3, "third" });
+      list.insert(list.end(), ScoreData{ 3, "third" });
     
       //挿入
-      const ScoreList& clist = list;
-      ConstIterator pos = list.cbegin();
+      ConstIterator pos = clist.cbegin();
       ++pos;
     
-      ConstIterator inserted = list.insert(pos, ScoreData{0, "new"});
+      Iterator inserted;
+      ASSERT_EQ(Result::Success, list.insert(pos,ScoreData { 0, "new"}, &inserted));
       ASSERT_EQ(4, list.size());
     
       //元の先頭は変わらないこと
-      ConstIterator cur = list.cbegin();
+      ConstIterator cur = clist.cbegin();
       EXPECT_EQ(1, (*cur).score);
       ++cur;
 
@@ -292,7 +296,7 @@ namespace Test_List
       EXPECT_EQ(3, (*cur).score);
       ++cur;
       
-      EXPECT_TRUE(cur == list.cend());
+      EXPECT_TRUE(cur == clist.cend());
     }
 
     /**
@@ -309,13 +313,13 @@ namespace Test_List
   
       //リストの参照がないイテレータ
       Iterator invalid;
-      list.insert(invalid, ScoreData{ 9, "bad" });
+      EXPECT_EQ(Result::NoOwner, list.insert(invalid, ScoreData{ 9, "bad" }));
       EXPECT_EQ(2, list.size());
   
       //別リストの要素を指すイテレータ
       ScoreList other;
       other.insert(other.end(), ScoreData{ 100, "other" });
-      list.insert(other.begin(), ScoreData{ 9, "bad" });
+      EXPECT_EQ(Result::OtherList, list.insert(other.begin(), ScoreData{ 9, "bad" }));
       ASSERT_EQ(2, list.size());
       
       //別リスト側にも挿入されていないこと
@@ -356,10 +360,11 @@ namespace Test_List
      */
     TEST(Erase,T016){
       ScoreList list;
-      list.erase(list.begin());
+
+      EXPECT_EQ(Result::EndIterator, list.erase(list.begin()));
       EXPECT_EQ(0, list.size());
 
-      list.erase(list.end());
+      EXPECT_EQ(Result::EndIterator, list.erase(list.end()));
       EXPECT_EQ(0, list.size());
     }
 
@@ -375,7 +380,8 @@ namespace Test_List
       list.insert(list.end(), ScoreData{ 2, "second" });
       
       //先頭要素の削除
-      Iterator next = list.erase(list.begin());
+      Iterator next;
+      ASSERT_EQ(Result::Success, list.erase(list.begin(), &next));
 
       //要素が減っていることを確認
       ASSERT_EQ(1, list.size());
@@ -398,11 +404,8 @@ namespace Test_List
         list.insert(list.end(), ScoreData{ 1, "first" });
         list.insert(list.end(), ScoreData{ 2, "second" });
 
-        //末尾イテレータを渡して削除
-        Iterator next = list.erase(list.end());
-        
-        //戻り値が末尾イテレータであること
-        EXPECT_TRUE(next == list.end());
+        //末尾イテレータを渡して削除できないこと
+        EXPECT_EQ(Result::EndIterator, list.erase(list.end()));
         
         //要素が減っていないことを確認
         ASSERT_EQ(2, list.size());
@@ -430,12 +433,13 @@ namespace Test_List
         ScoreList list;
         list.insert(list.end(), ScoreData{ 1, "first" });
         list.insert(list.end(), ScoreData{ 2, "second" });
-       list.insert(list.end(), ScoreData{ 3, "third" });
+        list.insert(list.end(), ScoreData{ 3, "third" });
 
         //先頭でも末尾でもないイテレータ
         Iterator pos = list.begin();
         ++pos;
-        Iterator next = list.erase(pos);
+        Iterator next;
+        ASSERT_EQ(Result::Success, list.erase(pos, &next));
         
         //戻り値が削除した要素の次（third）を指していること
         EXPECT_EQ(3, (*next).score);
@@ -450,7 +454,7 @@ namespace Test_List
         EXPECT_EQ("first", (*it).userName);
         ++it;
         
-        EXPECT_TRUE(it == next);   //戻り値の位置がリスト上でも正しいこと
+        EXPECT_TRUE(it == next);   //イテレータの位置がリスト上でも正しいこと
         EXPECT_EQ(3, (*it).score);
         EXPECT_EQ("third", (*it).userName);
         ++it;
@@ -466,29 +470,30 @@ namespace Test_List
      */
      TEST(Erase,T020){
         ScoreList list;
+        const ScoreList& clist = list;
         list.insert(list.end(), ScoreData{ 1, "first" });
         list.insert(list.end(), ScoreData{ 2, "second" });
-       list.insert(list.end(), ScoreData{ 3, "third" });
+        list.insert(list.end(), ScoreData{ 3, "third" });
       
         //ConstIteratorを指定して真ん中を削除
-        const ScoreList& clist = list;
-        ConstIterator pos = list.cbegin();
+        ConstIterator pos = clist.cbegin();
         ++pos;
-        Iterator next = list.erase(pos);
+        Iterator next;
+        ASSERT_EQ(Result::Success, list.erase(pos, &next));
       
         ASSERT_EQ(2, list.size());
       
         //格納済みの要素に影響がないか
-        ConstIterator it = list.cbegin();
+        ConstIterator it = clist.cbegin();
         EXPECT_EQ(1, (*it).score);
         EXPECT_EQ("first", (*it).userName);
         ++it;
         EXPECT_EQ(3, (*it).score);
         EXPECT_EQ("third", (*it).userName);
         ++it;
-        EXPECT_TRUE(it == list.cend());
+        EXPECT_TRUE(it == clist.cend());
       
-        //戻り値が削除した要素の次を指しているか
+        //イテレータが削除した要素の次を指しているか
         EXPECT_EQ(3, (*next).score);
         EXPECT_EQ("third", (*next).userName);
         ++next;
@@ -509,21 +514,24 @@ namespace Test_List
   
       //リストの参照がないイテレータ
       Iterator invalid;
-      Iterator ret = list.erase(invalid);
-      EXPECT_TRUE(ret == list.end());
+      EXPECT_EQ(Result::NoOwner, list.erase(invalid));
       ASSERT_EQ(2, list.size());
   
       //別リストの要素を指すイテレータ
       ScoreList other;
       other.insert(other.end(), ScoreData{ 100, "other" });
-      ret = list.erase(other.begin());
-      EXPECT_TRUE(ret == list.end());
+      EXPECT_EQ(Result::OtherList, list.erase(other.begin()));
       ASSERT_EQ(2, list.size());
   
       //別リスト側の要素も削除されていないこと
       ASSERT_EQ(1, other.size());
       EXPECT_EQ(100, (*other.begin()).score);
       EXPECT_EQ("other", (*other.begin()).userName);
+
+      //失敗時は出力先のイテレータが変更されないこと
+      Iterator out = list.begin();
+      EXPECT_EQ(Result::NoOwner, list.erase(invalid, &out));
+      EXPECT_TRUE(out == list.begin());
   
       //元のリストの要素が変わっていないこと
       Iterator it = list.begin();
@@ -744,8 +752,11 @@ namespace Test_List
     TEST(ConstBeginTest,T029){
       ScoreList list;
       const ScoreList& clist = list;
-      ConstIterator it = list.cbegin();
-      EXPECT_TRUE(it == list.cend());
+      ConstIterator it = clist.cbegin();
+      EXPECT_TRUE(it == clist.cend());
+
+      //const版のbegin()もcbegin()と一致すること
+      EXPECT_TRUE(clist.begin() == clist.cbegin());
     }
 
     /**
@@ -935,7 +946,7 @@ namespace Test_List
     TEST(EndTest,T035){
       ScoreList list;
       Iterator it = list.end();
-      EXPECT_TRUE(it == list.end());
+      EXPECT_TRUE(it == list.begin());
     }
 
     /**
@@ -1138,8 +1149,13 @@ namespace Test_List
     TEST(ConstEndTest,T041){
       ScoreList list;
       const ScoreList& clist = list;
-      ConstIterator it = list.cend();
-      EXPECT_TRUE(it == list.cend());
+      ConstIterator it = clist.cend();
+
+      //空のリストでは末尾と先頭が一致すること
+      EXPECT_TRUE(it == clist.cbegin());
+
+      //const版のend()もcend()と一致すること
+      EXPECT_TRUE(clist.end() == clist.cend());
     }
 
     /**

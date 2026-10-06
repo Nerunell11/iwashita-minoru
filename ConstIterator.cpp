@@ -2,8 +2,6 @@
 #include "ScoreList.h"
 #include <cassert>
 
-ScoreList::ConstIterator::ConstIterator() : current(nullptr),owner(nullptr) {}
-
 ScoreList::ConstIterator::ConstIterator(Node* node, const ScoreList* owner) : current(node) ,owner(owner) {}
 
 ScoreList::ConstIterator& ScoreList::ConstIterator::operator++() {
