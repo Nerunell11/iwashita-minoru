@@ -6,6 +6,7 @@
 #include "ScoreData.h"
 #include "ScoreList.h"
 
+
 namespace { //mainで使う関数を定義します
     void printList(const ScoreList& list, std::ostream& os){
         for (const ScoreData& data : list ){
