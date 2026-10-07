@@ -8,22 +8,40 @@
  * 
  * コピーとムーブは禁止し、所有権はリスト自身が持つ
  */
-class ScoreList {
+class ScoreList final {
 private:
 
     /**
     * @brief リストの1要素を表すノード
     *
     */
-    struct Node {
-        Node* prev;
-        Node* next;
-        ScoreData data;
+    struct Node final {
+        Node* prev; ///<前のノード
+        Node* next; ///<次のノード
+        ScoreData data; ///<格納データ
         Node(Node* prev, Node* next, const ScoreData& data)
             : prev(prev), next(next), data(data) {}
     };
 
 public:
+
+    /**
+     * @brief リスト操作の結果
+     */
+    enum class Result {
+        Success, ///<成功
+        NoOwner, ///<どのリストにも属さないイテレータ
+        OtherList, ///<別のリストのイテレータ
+        EndIterator ///<末尾を示すイテレータは削除できない
+    };
+
+    /**
+     * @brief リスト操作の結果を文字列に変換する
+     * 
+     * @param[in] result リスト操作の結果
+     * @return const char* 文字列に変換した結果
+     */
+    static const char* toMessage(Result result);
 
     /**
     * @brief 読み取り専用のイテレータ
@@ -32,7 +50,12 @@ public:
         friend class ScoreList;
 
     public:
-        ConstIterator();
+        ConstIterator() = default;
+        ConstIterator(const ConstIterator&) = default;
+        ConstIterator& operator=(const ConstIterator&) = default;
+        ConstIterator(ConstIterator&&) = default;
+        ConstIterator& operator=(ConstIterator&&) = default;
+        virtual ~ConstIterator() = default;
 
         /**
         * @brief イテレータをインクリメントする
@@ -114,18 +137,23 @@ public:
         */
         bool isBegin() const;
 
-        Node* current;
-        const ScoreList* owner;
+        Node* current = nullptr; ///< 現在のノード
+        const ScoreList* owner = nullptr;///< このイテレータが属するリスト
     };
 
     /**
     * @brief 読み書き可能なイテレータ
     */
-    class Iterator : public ConstIterator {
+    class Iterator final : public ConstIterator {
         friend class ScoreList;
 
     public:
-        Iterator();
+        Iterator() = default;
+        Iterator(const Iterator&) = default;
+        Iterator& operator=(const Iterator&) = default;
+        Iterator(Iterator&&) = default;
+        Iterator& operator=(Iterator&&) = default;
+        ~Iterator() override = default;
 
         /**
         * @brief イテレータの現在のデータを取得する
@@ -139,7 +167,7 @@ public:
     };
 
     ScoreList();
-    ~ScoreList();
+    virtual ~ScoreList();
 
     ScoreList(const ScoreList&) = delete;
     ScoreList& operator=(const ScoreList&) = delete;
@@ -149,19 +177,26 @@ public:
     /**
      * @brief 指定位置にデータを挿入する
      * 
-     * @param pos 挿入位置のイテレータ
-     * @param data 挿入するデータ
-     * @return Iterator 挿入後の位置のイテレータ
+     * @param[in] pos 挿入位置のイテレータ
+     * @param[in] data 挿入するデータ
+     * @param[out] outIt 挿入した要素を指すイテレータの格納先
+     * @retval Success 成功
+     * @retval NoOwner posがどのリストにも属していない
+     * @retval OtherList posが別のリストのイテレータ
      */
-    Iterator insert(ConstIterator pos, const ScoreData& data);
+    Result insert(ConstIterator pos, const ScoreData& data, Iterator* outIt = nullptr);
 
     /**
      * @brief 指定位置のデータを削除する
      * 
-     * @param pos 削除する位置のイテレータ
-     * @return Iterator 削除後の位置のイテレータ
+     * @param[in] pos 削除する位置のイテレータ
+     * @param[out] outNext 削除した要素の次の要素を指すイテレータの格納先
+     * @retval Success 成功
+     * @retval NoOwner posがどのリストにも属していない
+     * @retval OtherList posが別のリストのイテレータ
+     * @retval EndIterator posが末尾を示すイテレータ
      */
-    Iterator erase(ConstIterator pos);
+    Result erase(ConstIterator pos,Iterator* outNext = nullptr);
 
 
     /**
@@ -207,13 +242,13 @@ public:
     ConstIterator cend() const;
 
     /**
-     * @brief リストのサイズを取得する
+     * @brief 保持している要素数を返す
      * 
-     * @return int リストのサイズ
+     * @return int 保持している要素数
      */
     int size() const;
-
 private:
-    Node* node;
+    Node sentinel; ///<ダミーノード 空のときは自分自身を指す
+    int count = 0; ///<現在のリストの要素数
 
 };

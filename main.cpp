@@ -51,15 +51,15 @@ int main()
         }
 
         //スコアリストに追加
-        list.insert(list.end(), ScoreData { score, name });
+        ScoreList::Result result = list.insert(list.end(), ScoreData { score, name});
+        if(result != ScoreList::Result::Success) {
+            std::cout << lineNo << "行目の追加に失敗しました\n";
+            std::cerr << "ScoreList::insert失敗:" << ScoreList::toMessage(result) << '\n';
+            return 1;
+        }
     }
     
-    std::ofstream out("result.txt");
-    if (!out){
-        std::cerr << "result.txtを開けません\n";
-        return 1;
-    }
-    printList(list, out);
+
     printList(list, std::cout);
 
     //終了

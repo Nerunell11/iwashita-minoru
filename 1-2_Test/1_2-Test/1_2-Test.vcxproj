@@ -100,6 +100,7 @@
   <ItemGroup>
     <ClInclude Include="ManualTest.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="TestHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ConstIterator.cpp">

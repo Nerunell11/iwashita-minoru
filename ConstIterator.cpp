@@ -2,8 +2,6 @@
 #include "ScoreList.h"
 #include <cassert>
 
-ScoreList::ConstIterator::ConstIterator() : current(nullptr),owner(nullptr) {}
-
 ScoreList::ConstIterator::ConstIterator(Node* node, const ScoreList* owner) : current(node) ,owner(owner) {}
 
 ScoreList::ConstIterator& ScoreList::ConstIterator::operator++() {
@@ -33,6 +31,8 @@ ScoreList::ConstIterator ScoreList::ConstIterator::operator--(int){
 }
 
 const ScoreData& ScoreList::ConstIterator::operator*() const {
+    assert(hasOwner() && "イテレータの所有者が存在しません");
+    assert(!isEnd() && "末尾を示すイテレータを参照しようとしています");
     return current->data;
 }
 
