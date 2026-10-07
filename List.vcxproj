@@ -139,15 +139,14 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConstIterator.cpp" />
+    <ClCompile Include="Iterator.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClInclude Include="DoublyLinkedList.h" />
     <ClInclude Include="ScoreData.h" />
+    <ClCompile Include="ScoreList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScoreList.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DoublyLinkedList.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
