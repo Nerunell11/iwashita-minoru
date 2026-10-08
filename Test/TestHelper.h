@@ -5,11 +5,15 @@
  *********************************************************************************/
 #pragma once
 #include "gtest/gtest.h"
-#include "ScoreList.h"
+#include "DoublyLinkedList.h"
+#include "ScoreData.h"
 
  //----------------------------------------------------------------------------------
  // エイリアス
  //----------------------------------------------------------------------------------
+ 
+ //成績データを格納する双方向リスト
+using ScoreList = DoublyLinkedList<ScoreData>;
 using Iterator = ScoreList::Iterator;
 using ConstIterator = ScoreList::ConstIterator;
 using Result = ScoreList::Result;

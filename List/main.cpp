@@ -4,7 +4,9 @@
 #include <fstream>
 #include <sstream>
 #include "ScoreData.h"
-#include "ScoreList.h"
+#include "DoublyLinkedList.h"
+
+using ScoreList = DoublyLinkedList<ScoreData>;
 
 namespace { //mainで使う関数を定義します
     void printList(const ScoreList& list, std::ostream& os){

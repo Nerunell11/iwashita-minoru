@@ -144,9 +144,6 @@
     <ClInclude Include="ScoreData.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ScoreList.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="DoublyLinkedList.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
