@@ -141,10 +141,12 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClInclude Include="DoublyLinkedList.h" />
+    <ClInclude Include="QuickSort.h" />
     <ClInclude Include="ScoreData.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DoublyLinkedList.inl" />
+    <None Include="QuickSort.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

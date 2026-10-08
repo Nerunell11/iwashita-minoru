@@ -26,9 +26,15 @@
     <ClInclude Include="DoublyLinkedList.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="QuickSort.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DoublyLinkedList.inl">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
+    <None Include="QuickSort.inl">
       <Filter>ヘッダー ファイル</Filter>
     </None>
   </ItemGroup>
