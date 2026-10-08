@@ -6,7 +6,7 @@
 
 
  /**
-  * @brief スコアとユーザー名を保持する双方向リスト
+  * @brief 双方向リスト
   *
   * コピーとムーブは禁止し、所有権はリスト自身が持つ
   * @tparam T 格納するデータの型
@@ -141,8 +141,8 @@ public:
 		*/
 		bool isBegin() const;
 
-		Node* current = nullptr; ///< 現在のノード
-		const DoublyLinkedList* owner = nullptr;///< このイテレータが属するリスト
+		Node* current_ = nullptr; ///< 現在のノード
+		const DoublyLinkedList* owner_ = nullptr;///< このイテレータが属するリスト
 	};
 
 	/**
@@ -252,8 +252,8 @@ public:
 	 */
 	int size() const;
 private:
-	Node sentinel; ///<ダミーノード 空のときは自分自身を指す
-	int count = 0; ///<現在のリストの要素数
+	Node sentinel_; ///<ダミーノード 空のときは自分自身を指す
+	int count_ = 0; ///<現在のリストの要素数
 
 };
 
