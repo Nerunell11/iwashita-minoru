@@ -9,9 +9,13 @@
  //--------------------------------------------------------------------------------
 #include "pch.h"
 #include <gtest/gtest.h>
-#include "ScoreList.h"
+#include "DoublyLinkedList.h"
+#include "QuickSort.h"
 #include "ManualTest.h"
+#include "ScoreData.h"
 
+//成績データを格納する双方向リスト
+using ScoreList = DoublyLinkedList<ScoreData>;
 using Iterator = ScoreList::Iterator;
 using ConstIterator = ScoreList::ConstIterator;
 
@@ -171,6 +175,48 @@ namespace ex02_Iterator {
 		Iterator it;
 		ConstIterator cit;
 		it = cit;
+#endif
+		SUCCEED();
+	}
+
+}
+
+namespace ex03_QuickSort {
+
+	/**
+	 * @brief 型などが不適切なキー指定が引数で渡された時の挙動
+	 * @details ID:T007
+	 * 　　　　　コンパイルエラーとなる
+	 */
+	TEST(ManualTest, QuickSortRejectsInvalidKey) {
+#if defined(ENABLE_QUICK_SORT_REJECTS_UNCOMPARABLE_KEY)
+		{
+			ScoreList list;
+			//operator<で比較できないキー
+			quickSort(list, [](const ScoreData& data) { return data; }); //ここでエラー
+		}
+#endif
+
+#if defined(ENABLE_QUICK_SORT_REJECTS_WRONG_ARGUMENT_KEY)
+		{
+			ScoreList list;
+			//要素を受け取れないキー関数
+			quickSort(list, [](const char* name) { return name; }); //ここでエラー
+		}
+#endif
+		SUCCEED();
+	}
+
+
+	/**
+	 * @brief 非constのメソッドであるか
+	 * @details ID:T008
+	 * 　　　　　コンパイルエラーとなる
+	 */
+	TEST(ManualTest, QuickSortRejectsConstList) {
+#if defined(ENABLE_QUICK_SORT_REJECTS_CONST_LIST)
+		const ScoreList list;
+		quickSort(list, [](const ScoreData& data) { return data.score; }); //ここでエラー
 #endif
 		SUCCEED();
 	}

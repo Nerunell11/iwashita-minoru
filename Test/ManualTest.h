@@ -13,7 +13,9 @@
 #define ENABLE_CONST_LIST_ALLOWS_CEND
 
 
-//コンパイルできなければ成功
+//--------------------------------------------------------------------------------------------
+// リスト・イテレータ関連
+//--------------------------------------------------------------------------------------------
 //#define ENABLE_CONST_LIST_REJECTS_INSERT
 //#define ENABLE_CONST_LIST_REJECTS_ERASE
 //#define ENABLE_CONST_LIST_REJECTS_MUTABLE_BEGIN
@@ -22,3 +24,12 @@
 //#define ENABLE_ITERATOR_REJECTS_COPY_FROM_CONST
 //#define ENABLE_ITERATOR_REJECTS_ASSIGN_FROM_CONST
 
+//--------------------------------------------------------------------------------------------
+// クイックソート関連
+//============================================================================================
+
+//#define ENABLE_QUICK_SORT_REJECTS_UNCOMPARABLE_KEY
+//#define ENABLE_QUICK_SORT_REJECTS_WRONG_ARGUMENT_KEY
+//#define ENABLE_QUICK_SORT_REJECTS_CONST_LIST
+
+//--------------------------------------------------------------------------------------------

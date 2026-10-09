@@ -4,7 +4,10 @@
 #include <fstream>
 #include <sstream>
 #include "ScoreData.h"
-#include "ScoreList.h"
+#include "DoublyLinkedList.h"
+#include "QuickSort.h"
+
+using ScoreList = DoublyLinkedList<ScoreData>;
 
 namespace { //mainで使う関数を定義します
     void printList(const ScoreList& list, std::ostream& os){
@@ -12,6 +15,32 @@ namespace { //mainで使う関数を定義します
             os << data.score << '\t' << data.userName << '\n';
         }
     }
+
+    /**
+     * @brief ユーザー名をキーとして取り出す
+     * @return const std::string& ユーザー名
+     */
+    auto getUserName(const ScoreData& data) -> const std::string& {
+        return data.userName;
+    }
+
+    /**
+     * @brief スコアをキーとして取り出す
+     * @return int スコア
+     */
+    auto getScore(const ScoreData& data) -> int {
+        return data.score;
+    }
+
+    /**
+     * @brief ソートしてから見出し付きで出力する
+     */
+     template <typename KeyFunc>
+     void sortAndPrint(ScoreList& list, KeyFunc getKey, SortOrder order, const char* title, std::ostream& os = std::cout){
+        quickSort(list, getKey, order);
+        os << "---" << title << "---" << '\n';
+        printList(list, os);
+     }
 }
 
 
@@ -58,9 +87,17 @@ int main()
             return 1;
         }
     }
-    
 
+    std::cout << "--- 読み込み順 ---\n";
     printList(list, std::cout);
+
+    //ユーザー名をキーにソート
+    sortAndPrint(list, getUserName, SortOrder::Ascending, "ユーザー名順(昇順)");
+    sortAndPrint(list, getUserName, SortOrder::Descending, "ユーザー名順(降順)");
+    
+    //スコアをキーにソート
+    sortAndPrint(list, getScore, SortOrder::Ascending, "スコア順(昇順)");
+    sortAndPrint(list, getScore, SortOrder::Descending, "スコア順(降順)");
 
     //終了
     return 0;
