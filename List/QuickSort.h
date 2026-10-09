@@ -3,6 +3,7 @@
  * @date 2026-10-08
  */
 #pragma once
+#include <cstddef>
 #include "DoublyLinkedList.h"
 
  //---------------------------------------------------------------------------------
@@ -102,6 +103,15 @@ namespace QuickSortDetail {
  */
 template <typename T, typename KeyFunc>
 void quickSort(DoublyLinkedList<T>& list, KeyFunc getKey, SortOrder order = SortOrder::Ascending);
+
+/**
+ * @brief キー指定がない場合は何もしない
+ * @tparam T 要素の型
+ * @param list ソートするリスト
+ * @param order ソート順
+ */
+template <typename T>
+void quickSort(DoublyLinkedList<T>& list, std::nullptr_t,SortOrder order = SortOrder::Ascending);
 
 //テンプレートの実装はinlに記述する
 #include "QuickSort.inl"

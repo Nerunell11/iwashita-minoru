@@ -121,3 +121,8 @@ template <typename T, typename KeyFunc>
 void quickSort(DoublyLinkedList<T>& list, KeyFunc getKey, SortOrder order) {
 	QuickSortDetail::quickSortRange(list.begin(), list.end(), list.size(), getKey, order);
 }
+
+template <typename T>
+void quickSort(DoublyLinkedList<T>& /*list*/, std::nullptr_t, SortOrder /*order*/) {
+	//キー指定がない場合は何もしない
+}
