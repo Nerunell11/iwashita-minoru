@@ -116,71 +116,71 @@ inline void PushBackThreeItems(ScoreList& list) {
 /**
  * @brief 配列の要素を順にリスト末尾へ追加する
  */
- template <int N>
- void PushBackAll(ScoreList& list, const ScoreData(&data)[N]) {
-	 for (int i = 0; i < N; ++i) {
-		 ASSERT_NO_FATAL_FAILURE(PushBack(list, data[i]));
-	 }
- }
- 
- //----------------------------------------------------------------------------------
- // ソート用ヘルパー
- //----------------------------------------------------------------------------------
- 
- /**
-  * @brief スコアをキーとして取り出す
-  */
- inline int ScoreKey(const ScoreData& data) {
-	 return data.score;
- }
- 
- /**
-  * @brief ユーザー名をキーとして取り出す
-  */
- inline const std::string& UserNameKey(const ScoreData& data) {
-	 return data.userName;
- }
- 
- /**
-  * @brief リストがスコア順に並んでいるかを確認する
-  * @note 同じスコアの要素同士の順序は問わない
-  */
- inline void ExpectSortedByScore(const ScoreList& list, SortOrder order) {
-	 if (list.cbegin() == list.cend()) {
-		 return;
-	 }
- 
-	 ConstIterator it = list.cbegin();
-	 ConstIterator next = Next(it);
-	 for (int i = 1; next != list.cend(); ++it, ++next, ++i) {
-		 SCOPED_TRACE(i);
-		 if (order == SortOrder::Ascending) {
-			 EXPECT_LE((*it).score, (*next).score);
-		 }
-		 else {
-			 EXPECT_GE((*it).score, (*next).score);
-		 }
-	 }
- }
- 
- /**
-  * @brief 並び順を問わず、期待した要素がちょうど1つずつ含まれているかを確認する
-  * @note ソートで要素が消えたり重複したりしていないかの確認に使う
-  */
- template <int N>
- void ExpectSameElements(const ScoreList& list, const ScoreData(&expected)[N]) {
-	 ASSERT_EQ(N, list.size());
- 
-	 bool found[N] = {};
-	 for (ConstIterator it = list.cbegin(); it != list.cend(); ++it) {
-		 bool matched = false;
-		 for (int i = 0; i < N; ++i) {
-			 if (!found[i] && expected[i].score == (*it).score && expected[i].userName == (*it).userName) {
-				 found[i] = true;
-				 matched = true;
-				 break;
-			 }
-		 }
-		 EXPECT_TRUE(matched) << "想定外の要素: " << (*it).score << " " << (*it).userName;
-	 }
- }
+template <int N>
+void PushBackAll(ScoreList& list, const ScoreData(&data)[N]) {
+	for (int i = 0; i < N; ++i) {
+		ASSERT_NO_FATAL_FAILURE(PushBack(list, data[i]));
+	}
+}
+
+//----------------------------------------------------------------------------------
+// ソート用ヘルパー
+//----------------------------------------------------------------------------------
+
+/**
+ * @brief スコアをキーとして取り出す
+ */
+inline int ScoreKey(const ScoreData& data) {
+	return data.score;
+}
+
+/**
+ * @brief ユーザー名をキーとして取り出す
+ */
+inline const std::string& UserNameKey(const ScoreData& data) {
+	return data.userName;
+}
+
+/**
+ * @brief リストがスコア順に並んでいるかを確認する
+ * @note 同じスコアの要素同士の順序は問わない
+ */
+inline void ExpectSortedByScore(const ScoreList& list, SortOrder order) {
+	if (list.cbegin() == list.cend()) {
+		return;
+	}
+
+	ConstIterator it = list.cbegin();
+	ConstIterator next = Next(it);
+	for (int i = 1; next != list.cend(); ++it, ++next, ++i) {
+		SCOPED_TRACE(i);
+		if (order == SortOrder::Ascending) {
+			EXPECT_LE((*it).score, (*next).score);
+		}
+		else {
+			EXPECT_GE((*it).score, (*next).score);
+		}
+	}
+}
+
+/**
+ * @brief 並び順を問わず、期待した要素がちょうど1つずつ含まれているかを確認する
+ * @note ソートで要素が消えたり重複したりしていないかの確認に使う
+ */
+template <int N>
+void ExpectSameElements(const ScoreList& list, const ScoreData(&expected)[N]) {
+	ASSERT_EQ(N, list.size());
+
+	bool found[N] = {};
+	for (ConstIterator it = list.cbegin(); it != list.cend(); ++it) {
+		bool matched = false;
+		for (int i = 0; i < N; ++i) {
+			if (!found[i] && expected[i].score == (*it).score && expected[i].userName == (*it).userName) {
+				found[i] = true;
+				matched = true;
+				break;
+			}
+		}
+		EXPECT_TRUE(matched) << "想定外の要素: " << (*it).score << " " << (*it).userName;
+	}
+}
